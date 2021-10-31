@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"net/http"
 	"service-product/db"
 	"service-product/model"
 
@@ -9,9 +10,9 @@ import (
 )
 
 func Index(c *gin.Context) {
-	database := db.GetDB()
 	product := []model.Product{}
-	result := database.Find(&product)
+	database := db.GetDB()
+	result := database.Order("id desc").Find(&product)
 
 	if result.Error != nil {
 		c.AbortWithStatus(404)
@@ -21,12 +22,14 @@ func Index(c *gin.Context) {
 }
 
 func Store(c *gin.Context) {
-	database := db.GetDB()
-	product := model.Product{
-		Name:  "Macbook M2 2021",
-		Code:  "PRO22M2",
-		Price: 14990000,
+
+	product := model.Product{}
+	if err := c.ShouldBindJSON(&product); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
+
+	database := db.GetDB()
 	result := database.Create(&product)
 
 	if result.Error != nil {
@@ -39,8 +42,8 @@ func Store(c *gin.Context) {
 func Show(c *gin.Context) {
 	id := c.Params.ByName("id")
 
-	database := db.GetDB()
 	product := model.Product{}
+	database := db.GetDB()
 	result := database.First(&product, id)
 
 	if err := result.Error; err != nil {

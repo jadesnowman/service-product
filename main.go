@@ -13,7 +13,7 @@ func main() {
 	r := gin.Default()
 
 	r.GET("/products", controllers.Index)
-	r.GET("/products/store", controllers.Store)
+	r.POST("/products", controllers.Store)
 	r.GET("/products/:id", controllers.Show)
 
 	r.Run(":8082")

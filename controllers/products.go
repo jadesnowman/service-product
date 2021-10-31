@@ -56,3 +56,41 @@ func Show(c *gin.Context) {
 		c.JSON(200, product)
 	}
 }
+
+func Update(c *gin.Context) {
+	id := c.Params.ByName("id")
+
+	product := model.Product{}
+	database := db.GetDB()
+	result := database.First(&product, id)
+
+	if err := result.Error; err != nil {
+		responseFail := model.Fail{
+			Message: err.Error(),
+		}
+		fmt.Println(result)
+		c.JSON(404, responseFail)
+	} else {
+		c.JSON(200, product)
+	}
+}
+
+func Delete(c *gin.Context) {
+	id := c.Params.ByName("id")
+
+	product := model.Product{}
+	database := db.GetDB()
+	result := database.Delete(&product, id)
+
+	if err := result.Error; err != nil {
+		responseFail := model.Fail{
+			Message: err.Error(),
+		}
+		fmt.Println(result)
+		c.JSON(404, responseFail)
+	} else {
+		c.JSON(200, model.Success{
+			Message: "Data successfully deleted",
+		})
+	}
+}

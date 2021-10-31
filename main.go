@@ -10,13 +10,16 @@ import (
 func main() {
 	db.InitDB()
 
-	r := gin.Default()
+	router := gin.Default()
 
-	r.GET("/products", controllers.Index)
-	r.POST("/products", controllers.Store)
-	r.GET("/products/:id", controllers.Show)
-	r.PUT("/products/:id", controllers.Update)
-	r.DELETE("/products/:id", controllers.Delete)
+	v1 := router.Group("/api/v1")
+	{
+		v1.GET("/products", controllers.Index)
+		v1.POST("/products", controllers.Store)
+		v1.GET("/products/:id", controllers.Show)
+		v1.PUT("/products/:id", controllers.Update)
+		v1.DELETE("/products/:id", controllers.Delete)
+	}
 
-	r.Run(":8082")
+	router.Run(":8082")
 }

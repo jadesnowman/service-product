@@ -14,6 +14,7 @@ func main() {
 
 	r.GET("/products", controllers.Index)
 	r.GET("/products/store", controllers.Store)
+	r.GET("/products/:id", controllers.Show)
 
 	r.Run(":8082")
 }

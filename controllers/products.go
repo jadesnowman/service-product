@@ -10,9 +10,7 @@ import (
 
 func Index(c *gin.Context) {
 	database := db.GetDB()
-
 	product := []model.Product{}
-
 	result := database.Find(&product)
 
 	if result.Error != nil {
@@ -24,13 +22,11 @@ func Index(c *gin.Context) {
 
 func Store(c *gin.Context) {
 	database := db.GetDB()
-
 	product := model.Product{
 		Name:  "Macbook M2 2021",
 		Code:  "PRO22M2",
 		Price: 14990000,
 	}
-
 	result := database.Create(&product)
 
 	if result.Error != nil {
@@ -44,14 +40,12 @@ func Show(c *gin.Context) {
 	id := c.Params.ByName("id")
 
 	database := db.GetDB()
-
 	product := model.Product{}
-
 	result := database.First(&product, id)
 
-	if result.Error != nil {
+	if err := result.Error; err != nil {
 		responseFail := model.Fail{
-			Message: result.Error.Error(),
+			Message: err.Error(),
 		}
 		fmt.Println(result)
 		c.JSON(404, responseFail)

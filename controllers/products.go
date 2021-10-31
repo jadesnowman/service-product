@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"service-product/db"
 	"service-product/model"
@@ -50,7 +49,6 @@ func Show(c *gin.Context) {
 		responseFail := model.Fail{
 			Message: err.Error(),
 		}
-		fmt.Println(result)
 		c.JSON(404, responseFail)
 	} else {
 		c.JSON(200, product)
@@ -62,15 +60,22 @@ func Update(c *gin.Context) {
 
 	product := model.Product{}
 	database := db.GetDB()
-	result := database.First(&product, id)
+	result := database.Where("id = ?", id).First(&product)
 
 	if err := result.Error; err != nil {
 		responseFail := model.Fail{
 			Message: err.Error(),
 		}
-		fmt.Println(result)
+
 		c.JSON(404, responseFail)
 	} else {
+		if err := c.ShouldBindJSON(&product); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		database.Save(&product)
+
 		c.JSON(200, product)
 	}
 }
@@ -86,7 +91,7 @@ func Delete(c *gin.Context) {
 		responseFail := model.Fail{
 			Message: err.Error(),
 		}
-		fmt.Println(result)
+
 		c.JSON(404, responseFail)
 	} else {
 		c.JSON(200, model.Success{

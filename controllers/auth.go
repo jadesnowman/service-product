@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 	"service-product/db"
+	"service-product/middlewares"
 	"service-product/model"
 
 	"github.com/gin-gonic/gin"
@@ -71,5 +72,13 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, user)
+	token, err := middlewares.GenerateToken(int(user.ID), user.Email)
+	if err != nil {
+		c.JSON(http.StatusConflict, model.Fail{
+			Message: err.Error(),
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{"token": token, "expires_at": 1500})
 }

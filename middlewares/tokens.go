@@ -5,10 +5,6 @@ import (
 )
 
 func GenerateToken(id int, email string) (string, error) {
-	var APPLICATION_NAME = "yourAppName"
-	var JWT_SIGNATURE_KEY = []byte("abc123456789")
-	var JWT_EXPIRES_AT int64 = 15000
-
 	type MyCustomClaims struct {
 		jwt.StandardClaims
 		UserId int    `json:"user_id"`
@@ -29,6 +25,6 @@ func GenerateToken(id int, email string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	// Sign and get the complete encoded token as a string using the secret
-	tokenString, err := token.SignedString(JWT_SIGNATURE_KEY)
+	tokenString, err := token.SignedString([]byte(JWT_SIGNATURE_KEY))
 	return tokenString, err
 }

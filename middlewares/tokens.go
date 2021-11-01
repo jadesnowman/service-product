@@ -28,3 +28,11 @@ func GenerateToken(id int, email string) (string, error) {
 	tokenString, err := token.SignedString([]byte(JWT_SIGNATURE_KEY))
 	return tokenString, err
 }
+
+func ValidateToken(tokenString string, keyFunc string) (*jwt.Token, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(keyFunc), nil
+	})
+
+	return token, err
+}

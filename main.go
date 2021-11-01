@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"service-product/controllers"
 	"service-product/db"
 	"service-product/middlewares"
@@ -16,6 +17,7 @@ func main() {
 
 	v1.POST("/auth/register", controllers.Register)
 	v1.POST("/auth/login", controllers.Login)
+
 	v1.GET("/users", controllers.GetUsers)
 
 	v1.Use(middlewares.AuthHandler())
@@ -26,6 +28,8 @@ func main() {
 		v1.PUT("/products/:id", controllers.Update)
 		v1.DELETE("/products/:id", controllers.Delete)
 	}
+
+	fmt.Println("serve at http://localhost:8082")
 
 	router.Run(":8082")
 }

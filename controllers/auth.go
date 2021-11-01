@@ -45,13 +45,29 @@ func Register(c *gin.Context) {
 func Login(c *gin.Context) {
 	user := model.User{}
 
-	err := c.ShouldBindJSON(&user)
-	if err != nil {
-		fail := model.Fail{
-			Message: "Your account does not exists!",
-		}
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, model.Fail{
+			Message: err.Error(),
+		})
+		return
+	}
 
-		c.JSON(403, fail)
+	originalPassword := user.Password
+
+	database := db.GetDB()
+	result := database.Where("Email = ?", user.Email).First(&user)
+	if err := result.Error; err != nil {
+		c.JSON(http.StatusConflict, model.Fail{
+			Message: err.Error(),
+		})
+		return
+	}
+
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(originalPassword))
+	if err != nil {
+		c.JSON(http.StatusConflict, model.Fail{
+			Message: err.Error(),
+		})
 		return
 	}
 

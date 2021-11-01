@@ -24,6 +24,5 @@ func InitDB() {
 }
 
 func GetDB() *gorm.DB {
-	fmt.Print("Nilai")
 	return db
 }

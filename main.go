@@ -23,8 +23,8 @@ func main() {
 		v1.DELETE("/products/:id", controllers.Delete)
 	}
 
-	v1.POST("/auth/login", controllers.Login)
 	v1.POST("/auth/register", controllers.Register)
+	v1.POST("/auth/login", controllers.Login)
 
 	v1.GET("/users", controllers.GetUsers)
 

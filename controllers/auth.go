@@ -80,5 +80,5 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{"token": token, "expires_at": 1500})
+	c.JSON(200, gin.H{"token": token, "expires_at": middlewares.JWT_EXPIRES_AT})
 }

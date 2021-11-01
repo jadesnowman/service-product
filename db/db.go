@@ -20,6 +20,7 @@ func InitDB() {
 	}
 
 	db.AutoMigrate(&model.Product{})
+	db.AutoMigrate(&model.User{})
 }
 
 func GetDB() *gorm.DB {

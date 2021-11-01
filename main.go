@@ -12,8 +12,12 @@ func main() {
 	db.InitDB()
 
 	router := gin.Default()
-
 	v1 := router.Group("/api/v1")
+
+	v1.POST("/auth/register", controllers.Register)
+	v1.POST("/auth/login", controllers.Login)
+	v1.GET("/users", controllers.GetUsers)
+
 	v1.Use(middlewares.AuthHandler())
 	{
 		v1.GET("/products", controllers.Index)
@@ -22,11 +26,6 @@ func main() {
 		v1.PUT("/products/:id", controllers.Update)
 		v1.DELETE("/products/:id", controllers.Delete)
 	}
-
-	v1.POST("/auth/register", controllers.Register)
-	v1.POST("/auth/login", controllers.Login)
-
-	v1.GET("/users", controllers.GetUsers)
 
 	router.Run(":8082")
 }

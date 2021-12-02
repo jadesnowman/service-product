@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"net/http"
-	"service-product/db"
-	"service-product/model"
+	"github.com/jadesnowman/service-product/db"
+	"github.com/jadesnowman/service-product/model"
 
 	"github.com/gin-gonic/gin"
 )

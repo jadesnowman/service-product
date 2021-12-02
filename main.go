@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"service-product/controllers"
-	"service-product/db"
-	"service-product/middlewares"
+	"github.com/jadesnowman/service-product/controllers"
+	"github.com/jadesnowman/service-product/db"
+	"github.com/jadesnowman/service-product/middlewares"
 
 	"github.com/gin-gonic/gin"
 )

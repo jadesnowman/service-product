@@ -2,7 +2,8 @@ package db
 
 import (
 	"fmt"
-	"service-product/model"
+
+	"github.com/jadesnowman/service-product/model"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -12,7 +13,7 @@ var db *gorm.DB
 var err error
 
 func InitDB() {
-	dsn := "root:root@tcp(db_mysql)/sandbox_service_product?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:Password!123@tcp(localhost)/sandbox_service_product?charset=utf8mb4&parseTime=True&loc=Local"
 	db, _ = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {

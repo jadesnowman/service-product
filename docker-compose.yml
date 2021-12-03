@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  backend_golang:
+    build: .
+    command: go run main.go
+    ports:
+      - 8082:8082
+    depends_on:
+      - backend_database_mysql
+  backend_database_mysql:
+    build: .docker/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=saw@d1kab
+      - MYSQL_DATABASE=sandbox_service_product
+    volumes:
+      - ./data:/var/www/
